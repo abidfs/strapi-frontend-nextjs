@@ -30,7 +30,6 @@ export const getAllRestaurants = async (): Promise<
   try {
     const response = await fetch(baseUrl);
     const { data, meta: metadata } = await response.json();
-    console.log(data);
     const restaurants = data.map(
       (item: {
         id: string;
