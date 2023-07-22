@@ -39,11 +39,17 @@ export const getCaseDetails = async (
   id: string
 ): Promise<CaseDetails | null> => {
   try {
-    const response = await fetch(`${baseUrl}?filters[caseId][$eq]=${id.replace('-', '/')}`, {
-      next: { tags: [`case`] },
-    });
+    const response = await fetch(
+      `${baseUrl}?filters[caseId][$eq]=${id.replace("-", "/")}`,
+      {
+        next: { tags: [`case`] },
+      }
+    );
     const { data } = await response.json();
-    return { id: data[0].id, ...data[0].attributes };
+    if (data && data.length > 0) {
+      return { id: data[0].id, ...data[0].attributes };
+    }
+    return null;
   } catch (err) {
     console.log(err);
   }
