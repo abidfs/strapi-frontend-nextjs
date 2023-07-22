@@ -8,13 +8,12 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const res = await listCases();
-  console.log(res);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
         <p> Case List </p>
         {res.map((item) => (
-          <Link key={item.id} href={`/home/${item.id}`}>{item.issue}</Link>
+          <Link key={item.id} href={`/home/${item.caseId.replace('/', '-')}`}>{item.issue}</Link>
         ))}
       </div>
     </main>

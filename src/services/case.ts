@@ -1,5 +1,4 @@
 import config from "@/config/config";
-import { Metadata } from "./restaurant";
 
 const baseUrl = `${config.strapiHost}/api/cases`;
 
@@ -17,7 +16,7 @@ export const listCases = async (): Promise<Case[]> => {
   try {
     const response = await fetch(
       `${baseUrl}?fields[0]=caseId&fields[1]=issue`,
-      { next: { tags: ["case-list"] } }
+      { next: { tags: ["case"] } }
     );
     const { data, meta: metadata } = await response.json();
     return data.map(
@@ -40,12 +39,11 @@ export const getCaseDetails = async (
   id: string
 ): Promise<CaseDetails | null> => {
   try {
-    const response = await fetch(`${baseUrl}/${id}`, {
-      next: { tags: [`case-details-${id}`] },
+    const response = await fetch(`${baseUrl}?filters[caseId][$eq]=${id.replace('-', '/')}`, {
+      next: { tags: [`case`] },
     });
     const { data } = await response.json();
-    console.log(data);
-    return { id: data.id, ...data.attributes };
+    return { id: data[0].id, ...data[0].attributes };
   } catch (err) {
     console.log(err);
   }
