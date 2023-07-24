@@ -13,7 +13,7 @@ export default async function Home() {
       <div>
         <p> Case List </p>
         {res.map((item) => (
-          <Link key={item.id} href={`/home/${item.caseId.replace('/', '-')}`}>{item.issue}</Link>
+          <Link key={item.id} href={`/cases/${item.caseId.replace('/', '-')}`}>{item.issue}</Link>
         ))}
       </div>
     </main>

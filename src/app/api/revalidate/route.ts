@@ -12,8 +12,8 @@ export async function POST(request: NextRequest) {
     revalidateTag("case");
     
     //Need to reload the pages here so that page is revalidated and ready for next client
-    await fetch("http://localhost:3000/home");
-    await fetch(`http://localhost:3000/home/${data.entry.caseId.replace("/", "-")}`);
+    await fetch("http://localhost:3000/cases");
+    await fetch(`http://localhost:3000/cases/${data.entry.caseId.replace("/", "-")}`);
   } catch (err) {
     console.log(err);
   }
