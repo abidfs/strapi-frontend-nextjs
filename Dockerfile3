@@ -1,0 +1,27 @@
+FROM node:18-alpine AS base
+
+# Install dependencies using yarn package manager
+FROM base AS dependencies
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install
+
+FROM base AS runner
+RUN apk add --no-cache --upgrade bash
+RUN apk add py3-pip
+RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
+RUN pip install --upgrade pip
+RUN pip install azure-cli
+WORKDIR /app
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+
+ENV ACCESS_TOKEN $ACCESS_TOKEN
+ENV VAULT_NAME $VAULT_NAME
+ENV STRAPI_HOST $STRAPI_HOST
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+EXPOSE 3000
+ENTRYPOINT ["scripts/bootstrap.sh"]
