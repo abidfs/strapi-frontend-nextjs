@@ -30,7 +30,8 @@ export const listCases = async (): Promise<Case[]> => {
       })
     );
   } catch (err) {
-    console.log(err);
+    // console.log(err);
+    console.log('problem in getting case list')
   }
   return [];
 };
@@ -51,7 +52,8 @@ export const getCaseDetails = async (
     }
     return null;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
+    console.log('problem in getting case details')
   }
   return null;
 };
