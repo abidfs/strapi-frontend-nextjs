@@ -4,6 +4,7 @@ const { DefaultAzureCredential } = require("@azure/identity");
 const loadSecrets = async () => {
   try {
     const keyvaultUrl = `https://${process.env.VAULT_NAME}.vault.azure.net`;
+    console.log('..............keyvault url', keyvaultUrl)
     if (keyvaultUrl) {
       const credential = new DefaultAzureCredential();
       console.log('credentials created');
