@@ -23,5 +23,8 @@ ENV STRAPI_HOST $STRAPI_HOST
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN chmod +x scripts/bootstrap.sh
+RUN chmod +x scripts/keyvault.sh
+
 EXPOSE 3000
 ENTRYPOINT ["scripts/bootstrap.sh"]
