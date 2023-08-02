@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/keyvault.js",
     "build": "next build",
     "start": "next start",
+    "build:and:start": "yarn build && yarn start",
     "lint": "next lint"
   },
   "dependencies": {
