@@ -8,24 +8,13 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 FROM base AS runner
-# RUN apk add --no-cache --upgrade bash
-# RUN apk add py3-pip
-# RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
-# RUN pip install --upgrade pip
-# RUN pip install azure-cli
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-ENV ACCESS_TOKEN $ACCESS_TOKEN
-ENV VAULT_NAME $VAULT_NAME
 ENV STRAPI_HOST $STRAPI_HOST
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# RUN chmod +x scripts/bootstrap.sh
-# RUN chmod +x scripts/keyvault.sh
-
 EXPOSE 3000
-# ENTRYPOINT ["scripts/bootstrap.sh"]
 CMD ["yarn", "build:and:start"]

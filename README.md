@@ -31,6 +31,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ```
 export ACCESS_TOKEN=$(az account get-access-token --resource=https://vault.azure.net | jq -r .accessToken)   
-docker build -t website -f Dockerfile3 .
+docker build -t website -f Dockerfile .
 docker run -t -i -p 3000:3000 --env STRAPI_HOST=http://host.docker.internal:1337 website
 ```

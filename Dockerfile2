@@ -1,0 +1,59 @@
+FROM node:18-alpine AS base
+
+# Install dependencies using yarn package manager
+FROM base AS dependencies
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN  yarn install --production --ignore-scripts --prefer-offline --frozen-lockfile
+
+
+# Build the app
+# FROM base AS builder
+# WORKDIR /app
+# COPY --from=dependencies /app/node_modules ./node_modules
+# COPY . .
+
+# ENV NEXT_TELEMETRY_DISABLED 1
+# RUN yarn build
+
+
+# Build and run the app
+FROM base AS runner
+RUN apk add --no-cache --upgrade bash
+RUN apk add py3-pip
+RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
+RUN pip install --upgrade pip
+RUN pip install azure-cli
+
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+
+# RUN addgroup --system --gid 1001 nodejs
+# RUN adduser --system --uid 1001 nextjs
+
+# RUN --from=builder --chown=nextjs:nodejs /app/.next ./.next
+# COPY --from=builder /app/node_modules ./node_modules
+# COPY --from=builder /app/package.json ./package.json
+# COPY --from=builder /app/scripts ./scripts
+
+
+
+
+EXPOSE 3000
+ENV PORT 3000
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN ["chmod", "+x", "./scripts/bootstrap.sh"]
+RUN ["chmod", "+x", "./scripts/keyvault.sh"]
+CMD [ "sh", "./scripts/bootstrap.sh", "strapi-dev1"]
+
+# USER nextjs
+
+
+# CMD ["yarn build && yarn start"]
